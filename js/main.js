@@ -2,6 +2,8 @@ $(document).ready(function() {
   const $target = $('#target');
   const targetSize = $target.outerWidth();
 
+
+  
   function moveTarget() {
     // Move the model target to where we predict the user is looking to
     if (training.currentModel == null || training.inTraining) {
@@ -9,9 +11,13 @@ $(document).ready(function() {
     }
 
     const prediction = training.getPrediction();
-    const left = prediction[0] * ($('body').width() - targetSize);
-    const top = prediction[1] * ($('body').height() - targetSize);
+    
+    console.log(prediction);
+    
+    const left = prediction[0]*$('body').width();
+    const top = prediction[1]*$('body').height();
 
+    
     $target.css('left', left + 'px');
     $target.css('top', top + 'px');
   }
@@ -29,7 +35,7 @@ $(document).ready(function() {
   }
 
   // Map functions to keys and buttons:
-
+/*
   $('body').keyup(function(e) {
     // On space key:
     if (e.keyCode === 32 && ui.readyToCollect) {
@@ -39,7 +45,7 @@ $(document).ready(function() {
       return false;
     }
   });
-
+*/
   $('#start-training').click(function(e) {
     training.fitModel();
   });

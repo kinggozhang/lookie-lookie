@@ -1,9 +1,21 @@
-window.ui = {
+  const UP = 0;
+  const DOWN = 1;
+  const LEFT = 2;
+  const RIGHT = 3;
+  const NONE = -1;
+  const DIRSTR = ['上','下','左','右'];
+  let mv = null;
+  window.ui = {
   state: 'loading',
   readyToCollect: false,
   nExamples: 0,
+  dirExamples:[0,0,0,0],
   nTrainings: 0,
 
+  getImgList: function()
+  {
+      return 'imglist'+mv.hotdir;
+  },
   setContent: function(key, value) {
     // Set an element's content based on the data-content key.
     $('[data-content="' + key + '"]').html(value);
@@ -11,6 +23,7 @@ window.ui = {
 
   showInfo: function(text, dontFlash) {
     // Show info and beep / flash.
+    text += '<img id="preview" src=""></img>';
     this.setContent('info', text);
     if (!dontFlash) {
       $('#info').addClass('flash');
@@ -31,7 +44,7 @@ window.ui = {
       this.state = 'collecting';
       this.readyToCollect = true;
       this.showInfo(
-        "<h3>Let's start! 🙂</h3>" +
+        "<h3>Let's start!</h3>" +
           'Collect data points by moving your mouse over the screen, following the cursor with your eyes and hitting the space key repeatedly 👀',
         true,
       );
@@ -108,3 +121,29 @@ window.ui = {
     }
   },
 };
+
+  
+ mv = new Vue({
+      el: '#mainview',
+      data: {
+          hotdir:NONE,
+          samples:[0,0,0,0]          
+      },
+      methods:
+      {
+          onDirBtn:function(dir)
+          {
+              if(ui.readyToCollect)
+              {
+                this.hotdir = dir;
+                ui.showInfo("采集数据 "+DIRSTR[dir]);
+                dataset.captureExample();
+                this.samples[dir]++;
+              }
+              else
+              {
+                ui.showInfo("首先请激活摄像头，其次请将脸部朝向摄像头.<br>推荐使用Chrome浏览器<br>不知道怎么激活请F5刷新页面，弹出窗口点击【允许】");
+              }
+          }
+      }
+  });

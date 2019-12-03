@@ -47,7 +47,7 @@ window.heatmap = {
     heatmap.height = height;
     ctx.clearRect(0, 0, width, height);
 
-    this.fillHeatmap(dataset.val, model, ctx, width, height, 30);
+    //this.fillHeatmap(dataset.val, model, ctx, width, height, 30);
     this.fillHeatmap(dataset.train, model, ctx, width, height, 15);
 
     $('#clear-heatmap').prop('disabled', false);

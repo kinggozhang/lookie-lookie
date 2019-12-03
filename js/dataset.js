@@ -12,9 +12,20 @@ window.dataset = {
     y: null,
   },
 
-  getImage: function() {
+  getImage: function(collecting=false) {
+      
     // Capture the current image in the eyes canvas as a tensor.
     return tf.tidy(function() {
+      if(collecting)
+      {
+      var img = new Image(); 
+      img.src = document.getElementById('eyes').toDataURL("image/png");       
+      document.getElementById(ui.getImgList()).appendChild(img);
+      }
+      else
+      {
+          document.getElementById('preview').src = document.getElementById('eyes').toDataURL("image/png");
+      }
       const image = tf.browser.fromPixels(document.getElementById('eyes'));
       const batchedImage = image.expandDims(0);
       return batchedImage
@@ -146,7 +157,7 @@ window.dataset = {
     // Take the latest image from the eyes canvas and add it to our dataset.
     // Takes the coordinates of the mouse.
     tf.tidy(function() {
-      const img = dataset.getImage();
+      const img = dataset.getImage(true);
       const mousePos = mouse.getMousePos();
       const metaInfos = dataset.getMetaInfos();
       dataset.addExample(img, metaInfos, mousePos);

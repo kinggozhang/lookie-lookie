@@ -91,27 +91,23 @@ $(document).ready(function() {
 
     getEyesRect: function(position) {
       // Given a tracked face, returns a rectangle surrounding the eyes.
-      const minX = position[19][0] + 3;
-      const maxX = position[15][0] - 3;
+      const minX = position[23][0] - 5;
+      const maxX = position[28][0] + 5;
       const minY =
         Math.min(
-          position[20][1],
-          position[21][1],
-          position[17][1],
-          position[16][1],
-        ) + 6;
+          position[24][1],
+          position[29][1],
+        ) - 5;
       const maxY =
         Math.max(
-          position[23][1],
           position[26][1],
           position[31][1],
-          position[28][1],
-        ) + 3;
+        ) + 5;
 
       const width = maxX - minX;
-      const height = maxY - minY - 5;
+      const height = maxY - minY;
 
-      return [minX, minY, width, height * 1.25];
+      return [minX, minY, width, height];
     },
 
     trackFace: function(position) {
